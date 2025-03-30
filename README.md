@@ -241,6 +241,7 @@
       margin: 10px;
       border-radius: 10px;
       text-align: center;
+      position: relative;
     }
     
     .filtro-box {
@@ -390,6 +391,90 @@
     #timeLeft:after {
       content: "s";
       margin-left: 2px;
+    }
+
+    /* Stile per il link "Scopri di più" */
+    .discover-more {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: blue;
+      font-style: italic;
+      text-decoration: underline;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Stili per il dettaglio notizia */
+    .news-detail {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .news-content {
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+      padding: 20px;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .news-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .news-image-placeholder {
+      height: 150px;
+      background-color: rgba(255,255,255,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 15px;
+      border-radius: 5px;
+    }
+
+    .news-text {
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .news-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .news-button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #2d86ff;
+      color: white;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -552,6 +637,9 @@
     <!-- App principale (nascosta inizialmente) -->
     <div id="app-container" class="container"></div>
 
+    <!-- Dettaglio notizia (nascosto inizialmente) -->
+    <div class="news-detail" id="newsDetail"></div>
+
     <!-- Pulsante profilo fisso in alto a destra -->
     <button id="profile-button" class="profile-button" style="display: none;">👤</button>
   </div>
@@ -612,16 +700,43 @@
       }
     ];
 
+    // Notizie con contenuti
+    const newsItems = [
+      { 
+        titolo: "ITALIA: Meloni - \"L'Europa di Ventotene non è la mia\"", 
+        tema: "Italia", 
+        colore: "gray", 
+        testoColore: "white",
+        contenuto: "Durante un recente discorso, la Presidente del Consiglio Giorgia Meloni ha espresso la sua visione alternativa dell'Europa, distanziandosi dal modello federalista nato dal Manifesto di Ventotene. Secondo Meloni, l'UE dovrebbe essere un'alleanza di nazioni sovrane piuttosto che un super-stato centralizzato. La posizione ha suscitato reazioni contrastanti nel panorama politico europeo."
+      },
+      { 
+        titolo: "MONDO: Donald Trump firma i dazi contro l'UE", 
+        tema: "Mondo", 
+        colore: "red", 
+        testoColore: "white",
+        contenuto: "Il presidente americano Donald Trump ha firmato una nuova serie di dazi commerciali contro i prodotti europei, in particolare nel settore automobilistico e aeronautico. Questa mossa rischia di inasprire ulteriormente le relazioni transatlantiche e potrebbe avere ripercussioni sull'economia globale."
+      },
+      { 
+        titolo: "EUROPA: Ursula Von Der Leyen - \"I dazi americani non ci spaventano\"", 
+        tema: "Europa", 
+        colore: "blue", 
+        testoColore: "white",
+        contenuto: "La Presidente della Commissione Europea Ursula Von Der Leyen ha dichiarato che l'UE è pronta a rispondere ai nuovi dazi americani con misure proporzionate. \"Abbiamo strumenti per difendere il nostro mercato e i nostri cittadini\", ha affermato durante una conferenza stampa a Bruxelles."
+      },
+      { 
+        titolo: "ECONOMIA: La BCE taglia i tassi di interesse", 
+        tema: "Economia", 
+        colore: "green", 
+        testoColore: "white",
+        contenuto: "La Banca Centrale Europea ha annunciato un taglio dei tassi di interesse dello 0,25% nel tentativo di stimolare la crescita economica nella zona euro. La mossa è stata interpretata come una risposta al rallentamento economico globale e alle tensioni commerciali."
+      }
+    ];
+
     // Funzioni di navigazione
     function showNews(filter = null) {
       clearIntervals();
       
-      let news = [
-        { titolo: "ITALIA: Meloni - \"L'Europa di Ventotene non è la mia\"", tema: "Italia", colore: "gray", testoColore: "white" },
-        { titolo: "MONDO: Donald Trump firma i dazi contro l'UE", tema: "Mondo", colore: "red", testoColore: "white" },
-        { titolo: "EUROPA: Ursula Von Der Leyen - \"I dazi americani non ci spaventano\"", tema: "Europa", colore: "blue", testoColore: "white" },
-        { titolo: "ECONOMIA: La BCE taglia i tassi di interesse", tema: "Economia", colore: "green", testoColore: "white" }
-      ];
+      let news = [...newsItems]; // Copia l'array delle notizie
 
       if (filter) {
         news = news.filter(n => n.tema.toLowerCase() === filter.toLowerCase());
@@ -630,6 +745,7 @@
       let newsHTML = news.map(n => `
         <div class='news-item' style='background-color: ${n.colore}; color: ${n.testoColore};'>
           <strong>${n.titolo}</strong>
+          <div class="discover-more" data-titolo="${n.titolo}" data-contenuto="${n.contenuto}" data-colore="${n.colore}" data-testocolore="${n.testoColore}" data-tema="${n.tema}">Scopri di più</div>
         </div>`).join("");
 
       document.getElementById('app-container').innerHTML = `
@@ -665,6 +781,130 @@
           document.getElementById("filtro-opzioni").style.display = "none";
         });
       });
+
+      // Aggiungi event listener per i dettagli delle notizie
+      document.querySelectorAll('.discover-more').forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+          showNewsDetail(
+            this.getAttribute('data-titolo'),
+            this.getAttribute('data-contenuto'),
+            this.getAttribute('data-colore'),
+            this.getAttribute('data-testocolore'),
+            this.getAttribute('data-tema')
+          );
+        });
+      });
+    }
+
+    function showNewsDetail(titolo, contenuto, colore, testoColore, tema) {
+      let buttonsHTML = '';
+      
+      // Personalizza i pulsanti in base al tema della notizia
+      switch(tema) {
+        case 'Italia':
+          buttonsHTML = `
+            <button class="news-button" id="ventoteneButton">Scopri perché Ventotene è importante per la storia europea</button>
+            <button class="news-button" id="europaNewsButton">Altre notizie sull'Europa</button>
+          `;
+          break;
+        case 'Mondo':
+          buttonsHTML = `
+            <button class="news-button" id="daziGameButton">Quale sarà l'effetto dei dazi sulle nostre vite?</button>
+            <button class="news-button" id="mondoNewsButton">Altre notizie dal Mondo</button>
+          `;
+          break;
+        case 'Europa':
+          buttonsHTML = `
+            <button class="news-button" id="europaNewsButton">Altre notizie sull'Europa</button>
+          `;
+          break;
+        case 'Economia':
+          buttonsHTML = `
+            <button class="news-button" id="tassiButton">Come funzionano i tassi di interesse?</button>
+            <button class="news-button" id="economiaNewsButton">Altre notizie sull'economia</button>
+          `;
+          break;
+        default:
+          buttonsHTML = `
+            <button class="news-button" id="defaultButton">Scopri di più</button>
+          `;
+      }
+
+      const detailHTML = `
+        <div class="news-content" style="background-color: ${colore}; color: ${testoColore}">
+          <button class="close-button">×</button>
+          <div class="news-title">${titolo}</div>
+          <div class="news-image-placeholder">[Spazio per immagine]</div>
+          <div class="news-text">${contenuto}</div>
+          <div class="news-buttons">
+            ${buttonsHTML}
+          </div>
+        </div>`;
+      
+      document.getElementById('newsDetail').innerHTML = detailHTML;
+      document.getElementById('newsDetail').style.display = 'flex';
+      
+      // Chiudi il dettaglio
+      document.querySelector('.close-button').addEventListener('click', function() {
+        document.getElementById('newsDetail').style.display = 'none';
+      });
+      
+      // Chiudi cliccando fuori dal contenuto
+      document.getElementById('newsDetail').addEventListener('click', function(e) {
+        if(e.target === this) {
+          this.style.display = 'none';
+        }
+      });
+      
+      // Gestione dei pulsanti in base al tema
+      if (document.getElementById('ventoteneButton')) {
+        document.getElementById('ventoteneButton').addEventListener('click', function() {
+          document.getElementById('newsDetail').style.display = 'none';
+          showEdu();
+        });
+      }
+      
+      if (document.getElementById('europaNewsButton')) {
+        document.getElementById('europaNewsButton').addEventListener('click', function() {
+          document.getElementById('newsDetail').style.display = 'none';
+          showNews('Europa');
+        });
+      }
+      
+      if (document.getElementById('daziGameButton')) {
+        document.getElementById('daziGameButton').addEventListener('click', function() {
+          document.getElementById('newsDetail').style.display = 'none';
+          startDaziGame();
+        });
+      }
+      
+      if (document.getElementById('mondoNewsButton')) {
+        document.getElementById('mondoNewsButton').addEventListener('click', function() {
+          document.getElementById('newsDetail').style.display = 'none';
+          showNews('Mondo');
+        });
+      }
+      
+      if (document.getElementById('tassiButton')) {
+        document.getElementById('tassiButton').addEventListener('click', function() {
+          document.getElementById('newsDetail').style.display = 'none';
+          showEdu('Economia');
+        });
+      }
+      
+      if (document.getElementById('economiaNewsButton')) {
+        document.getElementById('economiaNewsButton').addEventListener('click', function() {
+          document.getElementById('newsDetail').style.display = 'none';
+          showNews('Economia');
+        });
+      }
+      
+      if (document.getElementById('defaultButton')) {
+        document.getElementById('defaultButton').addEventListener('click', function() {
+          document.getElementById('newsDetail').style.display = 'none';
+        });
+      }
     }
 
     function showGame() {
