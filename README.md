@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
@@ -13,27 +12,53 @@
       background-color: #f4f4f4;
       display: flex;
       justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #333;
+    }
+    
+    /* Cornice del telefono */
+    .phone-container {
+      width: 414px;
+      height: 896px;
+      background: #111;
+      border-radius: 40px;
+      padding: 20px;
+      box-sizing: border-box;
+      position: relative;
+      box-shadow: 0 0 0 4px #333, 0 0 0 8px #666, 0 20px 40px rgba(0,0,0,0.5);
+    }
+    
+    /* Notch superiore */
+    .phone-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 30px;
+      background: #111;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+      z-index: 10;
     }
     
     /* Container principale */
     .main-container {
       width: 100%;
-      max-width: 400px;
+      height: 100%;
       position: relative;
-      min-height: 100vh;
       background-color: white;
       overflow: hidden;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 20px;
     }
 
     /* Schermate introduttive */
     .intro-screen {
       position: fixed;
       top: 0;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 0;
       width: 100%;
-      max-width: 400px;
       height: 100%;
       background-color: #f4a261;
       display: flex;
@@ -76,7 +101,6 @@
       text-align: center;
       width: 100%;
       max-width: 350px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
     .intro-title {
@@ -177,7 +201,6 @@
       background-color: white;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       position: relative;
       display: none;
     }
@@ -244,6 +267,12 @@
       position: relative;
     }
     
+    /* Rimuovi ombra dall'ultimo elemento */
+    .news-list .news-item:last-child {
+      box-shadow: none;
+      margin-bottom: 70px; /* Spazio per il menu */
+    }
+    
     .filtro-box {
       display: flex;
       justify-content: center;
@@ -270,7 +299,6 @@
       width: 100%;
       background-color: white;
       border-radius: 0 0 10px 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       z-index: 100;
       padding: 5px;
       text-align: center;
@@ -479,169 +507,172 @@
   </style>
 </head>
 <body>
-  <div class="main-container">
-    <!-- Schermata iniziale -->
-    <div id="initial-screen" class="intro-screen">
-      <div class="intro-content">
-        <h1 class="welcome-title">Sei pronto a scoprire l'attualità divertendoti e ad avere un impatto sul mondo che ti circonda?</h1>
-        <p class="welcome-subtitle">Benvenuto su EditAPP</p>
-        <button id="start-intro" class="intro-button">INIZIAMO</button>
-        
-        <!-- Menu placeholder -->
-        <div class="bottom-menu-placeholder">
-          <button>📰</button>
-          <button>🎮</button>
-          <button>🎓</button>
-          <button>📋</button>
+  <div class="phone-container">
+    <div class="phone-notch"></div>
+    <div class="main-container">
+      <!-- Schermata iniziale -->
+      <div id="initial-screen" class="intro-screen">
+        <div class="intro-content">
+          <h1 class="welcome-title">Sei pronto a scoprire l'attualità divertendoti e ad avere un impatto sul mondo che ti circonda?</h1>
+          <p class="welcome-subtitle">Benvenuto su EditAPP</p>
+          <button id="start-intro" class="intro-button">INIZIAMO</button>
+          
+          <!-- Menu placeholder -->
+          <div class="bottom-menu-placeholder">
+            <button>📰</button>
+            <button>🎮</button>
+            <button>🎓</button>
+            <button>📋</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Schermata di benvenuto con nome -->
-    <div id="welcome-screen" class="intro-screen" style="display: none;">
-      <div class="intro-content">
-        <div class="welcome-box">
-          <h2>Come ti chiami?</h2>
-          <input type="text" id="username-input" placeholder="Il tuo nome" maxlength="20">
-          <button id="name-submit">CONTINUA</button>
-        </div>
-        
-        <!-- Menu placeholder -->
-        <div class="bottom-menu-placeholder">
-          <button>📰</button>
-          <button>🎮</button>
-          <button>🎓</button>
-          <button>📋</button>
+      <!-- Schermata di benvenuto con nome -->
+      <div id="welcome-screen" class="intro-screen" style="display: none;">
+        <div class="intro-content">
+          <div class="welcome-box">
+            <h2>Come ti chiami?</h2>
+            <input type="text" id="username-input" placeholder="Il tuo nome" maxlength="20">
+            <button id="name-submit">CONTINUA</button>
+          </div>
+          
+          <!-- Menu placeholder -->
+          <div class="bottom-menu-placeholder">
+            <button>📰</button>
+            <button>🎮</button>
+            <button>🎓</button>
+            <button>📋</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Schermate introduttive -->
-    <div id="intro-screen-1" class="intro-screen" style="display: none;">
-      <div class="intro-content">
-        <h2 class="intro-title">Ma come funziona EditAPP?</h2>
-        <button id="discover-button" class="intro-button">Scopriamolo insieme</button>
-        
-        <!-- Menu placeholder -->
-        <div class="bottom-menu-placeholder">
-          <button>📰</button>
-          <button>🎮</button>
-          <button>🎓</button>
-          <button>📋</button>
+      <!-- Schermate introduttive -->
+      <div id="intro-screen-1" class="intro-screen" style="display: none;">
+        <div class="intro-content">
+          <h2 class="intro-title">Ma come funziona EditAPP?</h2>
+          <button id="discover-button" class="intro-button">Scopriamolo insieme</button>
+          
+          <!-- Menu placeholder -->
+          <div class="bottom-menu-placeholder">
+            <button>📰</button>
+            <button>🎮</button>
+            <button>🎓</button>
+            <button>📋</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div id="intro-screen-2" class="intro-screen" style="display: none;">
-      <div class="intro-content">
-        <h2 class="intro-title">Sezione NEWS</h2>
-        <p class="intro-text">Ti sei perso le notizie dell'ultima ora o a fine giornata vuoi sapere cos'è successo nel mondo? Nella sezione "NEWS" puoi trovare tutte le notizie riassunte in breve e poi approfondire quelle che ti interessano maggiormente.</p>
-        
-        <button id="proceed-button-1" class="intro-button">PROCEDIAMO</button>
-        
-        <div class="arrow-container">
-          <div class="pointing-arrow" style="left: 12%">↓</div>
-        </div>
-        
-        <!-- Menu placeholder con icona NEWS evidenziata -->
-        <div class="bottom-menu-placeholder">
-          <button class="active-tab">📰</button>
-          <button>🎮</button>
-          <button>🎓</button>
-          <button>📋</button>
+      <div id="intro-screen-2" class="intro-screen" style="display: none;">
+        <div class="intro-content">
+          <h2 class="intro-title">Sezione NEWS</h2>
+          <p class="intro-text">Ti sei perso le notizie dell'ultima ora o a fine giornata vuoi sapere cos'è successo nel mondo? Nella sezione "NEWS" puoi trovare tutte le notizie riassunte in breve e poi approfondire quelle che ti interessano maggiormente.</p>
+          
+          <button id="proceed-button-1" class="intro-button">PROCEDIAMO</button>
+          
+          <div class="arrow-container">
+            <div class="pointing-arrow" style="left: 12%">↓</div>
+          </div>
+          
+          <!-- Menu placeholder con icona NEWS evidenziata -->
+          <div class="bottom-menu-placeholder">
+            <button class="active-tab">📰</button>
+            <button>🎮</button>
+            <button>🎓</button>
+            <button>📋</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div id="intro-screen-3" class="intro-screen" style="display: none;">
-      <div class="intro-content">
-        <h2 class="intro-title">Sezione GAME</h2>
-        <p class="intro-text">Vuoi metterti alla prova per essere sicuro di aver capito cosa sta succedendo nel mondo tramite giochi e quiz? Nella sezione "GAME" puoi trovare tutti i giochi e sfidare i tuoi amici a fare meglio di te.</p>
-        
-        <button id="proceed-button-2" class="intro-button">PROCEDIAMO</button>
-        
-        <div class="arrow-container">
-          <div class="pointing-arrow" style="left: 37%">↓</div>
-        </div>
-        
-        <!-- Menu placeholder con icona GAME evidenziata -->
-        <div class="bottom-menu-placeholder">
-          <button>📰</button>
-          <button class="active-tab">🎮</button>
-          <button>🎓</button>
-          <button>📋</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="intro-screen-4" class="intro-screen" style="display: none;">
-      <div class="intro-content">
-        <h2 class="intro-title">Sezione EDU</h2>
-        <p class="intro-text">Vuoi imparare in poco tempo cos'è successo in una determinata parte del mondo e perché OGGI sta succedendo qualcosa? Nella sezione "EDU" puoi trovare tantissimi percorsi che ti aiuteranno a farlo, in pochissimo tempo e divertendoti.</p>
-        
-        <button id="proceed-button-3" class="intro-button">PROCEDIAMO</button>
-        
-        <div class="arrow-container">
-          <div class="pointing-arrow" style="left: 62%">↓</div>
-        </div>
-        
-        <!-- Menu placeholder con icona EDU evidenziata -->
-        <div class="bottom-menu-placeholder">
-          <button>📰</button>
-          <button>🎮</button>
-          <button class="active-tab">🎓</button>
-          <button>📋</button>
+      <div id="intro-screen-3" class="intro-screen" style="display: none;">
+        <div class="intro-content">
+          <h2 class="intro-title">Sezione GAME</h2>
+          <p class="intro-text">Vuoi metterti alla prova per essere sicuro di aver capito cosa sta succedendo nel mondo tramite giochi e quiz? Nella sezione "GAME" puoi trovare tutti i giochi e sfidare i tuoi amici a fare meglio di te.</p>
+          
+          <button id="proceed-button-2" class="intro-button">PROCEDIAMO</button>
+          
+          <div class="arrow-container">
+            <div class="pointing-arrow" style="left: 37%">↓</div>
+          </div>
+          
+          <!-- Menu placeholder con icona GAME evidenziata -->
+          <div class="bottom-menu-placeholder">
+            <button>📰</button>
+            <button class="active-tab">🎮</button>
+            <button>🎓</button>
+            <button>📋</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div id="intro-screen-5" class="intro-screen" style="display: none;">
-      <div class="intro-content">
-        <h2 class="intro-title">Sezione DICCI LA TUA</h2>
-        <p class="intro-text">Finalmente senti di avere le basi per cambiare il mondo? Nella sezione "DICCI LA TUA" puoi aiutarci a raccogliere le opinioni della nostra generazione e firmare/proporre petizioni che rispecchino i tuoi interessi!</p>
-        
-        <button id="proceed-button-4" class="intro-button">PROCEDIAMO</button>
-        
-        <div class="arrow-container">
-          <div class="pointing-arrow" style="left: 87%">↓</div>
-        </div>
-        
-        <!-- Menu placeholder con icona DICCI LA TUA evidenziata -->
-        <div class="bottom-menu-placeholder">
-          <button>📰</button>
-          <button>🎮</button>
-          <button>🎓</button>
-          <button class="active-tab">📋</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Nuova schermata finale -->
-    <div id="intro-screen-6" class="intro-screen" style="display: none;">
-      <div class="intro-content">
-        <h2 class="intro-title">Sei pronto ad iniziare?</h2>
-        <p class="intro-text">Ora hai tutte le informazioni per usare al meglio EditAPP. Clicca il pulsante qui sotto per iniziare la tua esperienza!</p>
-        
-        <button id="final-start-button" class="intro-button">ANDIAMO</button>
-        
-        <!-- Menu placeholder -->
-        <div class="bottom-menu-placeholder">
-          <button>📰</button>
-          <button>🎮</button>
-          <button>🎓</button>
-          <button>📋</button>
+      <div id="intro-screen-4" class="intro-screen" style="display: none;">
+        <div class="intro-content">
+          <h2 class="intro-title">Sezione EDU</h2>
+          <p class="intro-text">Vuoi imparare in poco tempo cos'è successo in una determinata parte del mondo e perché OGGI sta succedendo qualcosa? Nella sezione "EDU" puoi trovare tantissimi percorsi che ti aiuteranno a farlo, in pochissimo tempo e divertendoti.</p>
+          
+          <button id="proceed-button-3" class="intro-button">PROCEDIAMO</button>
+          
+          <div class="arrow-container">
+            <div class="pointing-arrow" style="left: 62%">↓</div>
+          </div>
+          
+          <!-- Menu placeholder con icona EDU evidenziata -->
+          <div class="bottom-menu-placeholder">
+            <button>📰</button>
+            <button>🎮</button>
+            <button class="active-tab">🎓</button>
+            <button>📋</button>
+          </div>
         </div>
       </div>
+
+      <div id="intro-screen-5" class="intro-screen" style="display: none;">
+        <div class="intro-content">
+          <h2 class="intro-title">Sezione DICCI LA TUA</h2>
+          <p class="intro-text">Finalmente senti di avere le basi per cambiare il mondo? Nella sezione "DICCI LA TUA" puoi aiutarci a raccogliere le opinioni della nostra generazione e firmare/proporre petizioni che rispecchino i tuoi interessi!</p>
+          
+          <button id="proceed-button-4" class="intro-button">PROCEDIAMO</button>
+          
+          <div class="arrow-container">
+            <div class="pointing-arrow" style="left: 87%">↓</div>
+          </div>
+          
+          <!-- Menu placeholder con icona DICCI LA TUA evidenziata -->
+          <div class="bottom-menu-placeholder">
+            <button>📰</button>
+            <button>🎮</button>
+            <button>🎓</button>
+            <button class="active-tab">📋</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nuova schermata finale -->
+      <div id="intro-screen-6" class="intro-screen" style="display: none;">
+        <div class="intro-content">
+          <h2 class="intro-title">Sei pronto ad iniziare?</h2>
+          <p class="intro-text">Ora hai tutte le informazioni per usare al meglio EditAPP. Clicca il pulsante qui sotto per iniziare la tua esperienza!</p>
+          
+          <button id="final-start-button" class="intro-button">ANDIAMO</button>
+          
+          <!-- Menu placeholder -->
+          <div class="bottom-menu-placeholder">
+            <button>📰</button>
+            <button>🎮</button>
+            <button>🎓</button>
+            <button>📋</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- App principale (nascosta inizialmente) -->
+      <div id="app-container" class="container"></div>
+
+      <!-- Dettaglio notizia (nascosto inizialmente) -->
+      <div class="news-detail" id="newsDetail"></div>
+
+      <!-- Pulsante profilo fisso in alto a destra -->
+      <button id="profile-button" class="profile-button" style="display: none;">👤</button>
     </div>
-
-    <!-- App principale (nascosta inizialmente) -->
-    <div id="app-container" class="container"></div>
-
-    <!-- Dettaglio notizia (nascosto inizialmente) -->
-    <div class="news-detail" id="newsDetail"></div>
-
-    <!-- Pulsante profilo fisso in alto a destra -->
-    <button id="profile-button" class="profile-button" style="display: none;">👤</button>
   </div>
 
   <script>
@@ -700,31 +731,31 @@
       }
     ];
 
-    // Notizie con contenuti
+    // Notizie con contenuti (modificate come richiesto)
     const newsItems = [
       { 
-        titolo: "ITALIA: Meloni - \"L'Europa di Ventotene non è la mia\"", 
+        titolo: "ITALIA - Meloni: L'Europa di Ventotene non è la mia", 
         tema: "Italia", 
         colore: "gray", 
         testoColore: "white",
         contenuto: "Durante un recente discorso, la Presidente del Consiglio Giorgia Meloni ha espresso la sua visione alternativa dell'Europa, distanziandosi dal modello federalista nato dal Manifesto di Ventotene. Secondo Meloni, l'UE dovrebbe essere un'alleanza di nazioni sovrane piuttosto che un super-stato centralizzato. La posizione ha suscitato reazioni contrastanti nel panorama politico europeo."
       },
       { 
-        titolo: "MONDO: Donald Trump firma i dazi contro l'UE", 
+        titolo: "MONDO - Donald Trump firma i dazi contro l'UE", 
         tema: "Mondo", 
         colore: "red", 
         testoColore: "white",
         contenuto: "Il presidente americano Donald Trump ha firmato una nuova serie di dazi commerciali contro i prodotti europei, in particolare nel settore automobilistico e aeronautico. Questa mossa rischia di inasprire ulteriormente le relazioni transatlantiche e potrebbe avere ripercussioni sull'economia globale."
       },
       { 
-        titolo: "EUROPA: Ursula Von Der Leyen - \"I dazi americani non ci spaventano\"", 
+        titolo: "EUROPA - Ursula Von Der Leyen: I dazi americani non ci spaventano", 
         tema: "Europa", 
-        colore: "blue", 
+        colore: "cornflowerblue", 
         testoColore: "white",
         contenuto: "La Presidente della Commissione Europea Ursula Von Der Leyen ha dichiarato che l'UE è pronta a rispondere ai nuovi dazi americani con misure proporzionate. \"Abbiamo strumenti per difendere il nostro mercato e i nostri cittadini\", ha affermato durante una conferenza stampa a Bruxelles."
       },
       { 
-        titolo: "ECONOMIA: La BCE taglia i tassi di interesse", 
+        titolo: "ECONOMIA - La BCE taglia i tassi di interesse", 
         tema: "Economia", 
         colore: "green", 
         testoColore: "white",
@@ -732,6 +763,9 @@
       }
     ];
 
+    // [RESTANTE PARTE DEL CODICE JAVASCRIPT RIMANE INVARIATA...]
+    // ... (inserire qui tutto il resto del codice JavaScript dalla versione precedente)
+    
     // Funzioni di navigazione
     function showNews(filter = null) {
       clearIntervals();
@@ -941,7 +975,7 @@
       let courses = [
         { titolo: "LA LEGGE DI BILANCIO IN ITALIA - ITALIA", tema: "Italia", colore: "gray", testoColore: "white" },
         { titolo: "LA SITUAZIONE IN MEDIO ORIENTE - GEOPOLITICA", tema: "Geopolitica", colore: "red", testoColore: "white" },
-        { titolo: "LA STORIA DELL'UNIONE EUROPEA - EUROPA", tema: "Europa", colore: "blue", testoColore: "white" },
+        { titolo: "LA STORIA DELL'UNIONE EUROPEA - EUROPA", tema: "Europa", colore: "cornflowerblue", testoColore: "white" },
         { titolo: "I TASSI DI INTERESSE - ECONOMIA", tema: "Economia", colore: "green", testoColore: "white" }
       ];
 
